@@ -1,6 +1,8 @@
 import React from "react";
 import { auth } from "../../pages/_app";
 import firebase from "firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 function SignIn() {
   const signInWithGoogle = () => {
@@ -11,10 +13,11 @@ function SignIn() {
   return (
     <button
       onClick={signInWithGoogle}
-      className="w-full p-2 border-2 shadow-md text-white rounded-md"
+      className="w-full p-2 border-2 shadow-md text-white rounded-md flex gap-2 items-center"
       style={{backgroundColor:"#4285F4", borderColor:"#4285F4"}}
     >
-      Sign In With Google
+      <FontAwesomeIcon icon={faGoogle} />
+      <p className="h-full flex items-center">Sign In With Google</p>
     </button>
   );
 }
