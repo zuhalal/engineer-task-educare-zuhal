@@ -1,10 +1,10 @@
 import "../styles/globals.css";
 import "tailwindcss/tailwind.css";
+import Layout from "../Components/Layout";
 
 import firebase from "firebase";
 import "firebase/firestore";
 import "firebase/auth";
-import Layout from "../Components/Layout";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7xSDgXK88Lk8LjmhHQ3MgM31KIVMIBDg",
