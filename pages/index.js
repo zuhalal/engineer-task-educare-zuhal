@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import SignIn from '../Components/Auth/SignIn';
 import SignOut from '../Components/Auth/SignOut';
+import ChatRoom from '../Components/Container/ChatRoom';
 import styles from '../styles/Home.module.css'
 import { auth } from './_app';
 
@@ -18,11 +19,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {user ? null : <SignIn />}
+        {user ? <ChatRoom /> : <SignIn />}
         <SignOut />
       </main>
 
-      <footer className={styles.footer}>
+      <footer>
         
       </footer>
     </div>
