@@ -3,6 +3,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import SignIn from '../Components/Auth/SignIn';
 import SignOut from '../Components/Auth/SignOut';
 import ChatRoom from '../Components/Container/ChatRoom';
+import Login from '../Components/Container/Login';
 import styles from '../styles/Home.module.css'
 import { auth } from './_app';
 
@@ -18,8 +19,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        {user ? <ChatRoom /> : <SignIn />}
+      <main className="w-screen min-h-screen">
+        {user ? <ChatRoom /> : <Login />}
         <SignOut />
       </main>
 

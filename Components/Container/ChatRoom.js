@@ -8,11 +8,11 @@ function ChatRoom() {
   const query = messageRef.orderBy("createdAt").limit(25);
   const [messages] = useCollectionData(query, { idField: "id" });
   const [formValue, setFormValue] = useState("");
-  const dummy = useRef()
+  const dummy = useRef();
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    const { uid, text } = auth.currentUser;
+    const { uid } = auth.currentUser;
 
     await messageRef.add({
       text: formValue,
@@ -22,7 +22,7 @@ function ChatRoom() {
 
     setFormValue("");
 
-    dummy.current.scrollIntoView({behavior:"smooth"});
+    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

@@ -13,10 +13,9 @@ function SignIn() {
   return (
     <button
       onClick={signInWithGoogle}
-      className="w-full p-2 border-2 shadow-md text-white rounded-md flex gap-2 items-center"
-      style={{backgroundColor:"#4285F4", borderColor:"#4285F4"}}
+      className="w-full p-2 border-2 border-blueGoogle shadow-md text-white bg-blueGoogle rounded-md flex gap-2 items-center hover:bg-white hover:text-blueGoogle"
     >
-      <FontAwesomeIcon icon={faGoogle} />
+      <FontAwesomeIcon icon={faGoogle} width="20px" />
       <p className="h-full flex items-center">Sign In With Google</p>
     </button>
   );

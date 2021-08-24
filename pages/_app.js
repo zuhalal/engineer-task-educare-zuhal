@@ -1,9 +1,10 @@
-import '../styles/globals.css'
-import 'tailwindcss/tailwind.css'
+import "../styles/globals.css";
+import "tailwindcss/tailwind.css";
 
-import firebase from 'firebase'
-import 'firebase/firestore'
-import 'firebase/auth'
+import firebase from "firebase";
+import "firebase/firestore";
+import "firebase/auth";
+import Layout from "../Components/Layout";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7xSDgXK88Lk8LjmhHQ3MgM31KIVMIBDg",
@@ -11,7 +12,7 @@ const firebaseConfig = {
   projectId: "fir-chat-app-educare",
   storageBucket: "fir-chat-app-educare.appspot.com",
   messagingSenderId: "225448849682",
-  appId: "1:225448849682:web:ee05f8663f8621deee03cb"
+  appId: "1:225448849682:web:ee05f8663f8621deee03cb",
 };
 
 if (!firebase.apps.length) {
@@ -24,8 +25,17 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 function MyApp({ Component, pageProps }) {
-
-  return <Component {...pageProps} />
+  return (
+    <Layout>
+      <link
+        rel="preload"
+        href="/fonts/Poppins/Poppins-Regular.ttf"
+        as="font"
+        crossOrigin=""
+      />
+      <Component {...pageProps} />
+    </Layout>
+  );
 }
 
-export default MyApp
+export default MyApp;
