@@ -21,3 +21,10 @@ export const ChatroomBorderWrapper = styled.div.attrs({
   max-height: 600px;
   width: 800px;
 `;
+
+export const ChatWrapper = styled.div.attrs({
+  className:
+    "border-blue-400 rounded-md py-2 bg-blue-400 text-white flex flex-col gap-1 items-center"
+})`
+  min-width: 208px;
+`;

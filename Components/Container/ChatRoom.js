@@ -3,10 +3,10 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
 import PrimaryButton from "../Elements/Buttons/PrimaryButton";
-import { ChatroomBorderWrapper, ChatroomWrapper } from "./style";
+import { ChatroomBorderWrapper, ChatroomWrapper, ChatWrapper } from "./style";
 import SignOut from "../Auth/SignOut";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { H3 } from "../../styles/typography";
+import { H3, P1, P2, P3 } from "../../styles/typography";
 
 function ChatRoom() {
   const messageRef = firestore.collection("messages");
@@ -15,15 +15,18 @@ function ChatRoom() {
   const [formValue, setFormValue] = useState("");
   const dummy = useRef();
   const [user] = useAuthState(auth);
+  console.log(messages);
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    const { uid } = auth.currentUser;
+    const { uid, photoURL, displayName } = auth.currentUser;
 
     await messageRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
+      photoURL,
+      displayName,
     });
 
     setFormValue("");
@@ -71,23 +74,42 @@ function ChatRoom() {
 }
 
 export const ChatMessage = ({ message }) => {
-  const { text, uid } = message;
+  const { text, uid, photoURL, displayName } = message;
   const messageClass = uid === auth.currentUser.uid ? "Sent" : "Received";
 
   return (
     <>
       {messageClass == "Sent" ? (
-        <div className="flex justify-end">
-          <div className="border-blue-400 rounded-md w-52 bg-blue-400 text-white flex flex-col gap-1 mb-4 justify-center items-center">
-            <p>{text}</p>
-            <p>{messageClass}</p>
+        <div className="flex flex-col items-end mb-5">
+          <div className="flex gap-2">
+            <div className="flex flex-col items-start">
+              <div className="flex flex-row-reverse items-center gap-2">
+                <ChatWrapper>
+                  <P3>{text}</P3>
+                </ChatWrapper>
+                <P3>{messageClass}</P3>
+              </div>
+            </div>
+            <div className="w-10 flex items-start">
+              <img src={photoURL} style={{ borderRadius: "50%" }} />
+            </div>
           </div>
         </div>
       ) : (
-        <div className="flex justify-start">
-          <div className="border-blue-400 rounded-md w-52 bg-blue-400 text-white flex flex-col gap-1 mb-4 justify-center items-center">
-            <p>{text}</p>
-            <p>{messageClass}</p>
+        <div className="flex flex-col items-start mb-5">
+          <div className="flex gap-2">
+            <div className="w-10 flex items-end">
+              <img src={photoURL} style={{ borderRadius: "50%" }} />
+            </div>
+            <div className="flex flex-col items-start">
+              <P2>{displayName}</P2>
+              <div className="flex gap-2 items-center">
+                <ChatWrapper>
+                  <P3>{text}</P3>
+                </ChatWrapper>
+                <P3>{messageClass}</P3>
+              </div>
+            </div>
           </div>
         </div>
       )}

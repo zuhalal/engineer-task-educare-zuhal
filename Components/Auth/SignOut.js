@@ -9,7 +9,7 @@ function SignOut() {
       {auth.currentUser ? (
         <button
           onClick={() => auth.signOut()}
-          className=" p-2 border-2 border-white bg-white shadow-md rounded-md text-blueGoogle flex gap-2 items-center"
+          className=" p-2 border-2 border-white bg-white hover:border-blueGoogle hover:bg-blueGoogle shadow-md rounded-md text-blueGoogle hover:text-white flex gap-2 items-center"
         >
           <FontAwesomeIcon icon={faSignOutAlt} width="20px" />
           Sign Out
