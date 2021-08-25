@@ -33,7 +33,7 @@ function ChatRoom() {
   };
 
   return (
-    <>
+    <div className="xl:p-0 p-3">
       {user ? (
         <div className="flex lg:flex-row flex-col-reverse mt-12 gap-3">
           <div className="w-full justify-start lg:flex hidden">
@@ -75,7 +75,7 @@ function ChatRoom() {
           </form>
         </ChatroomBorderWrapper>
       </ChatroomWrapper>
-    </>
+    </div>
   );
 }
 

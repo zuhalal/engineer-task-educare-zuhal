@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const LoginWrapper = styled.div.attrs({
   className:
-    "lg:p-5 p-3 h-full flex flex-col justify-center items-center lg:w-1/2 bg-white",
+    " h-full flex flex-col justify-center items-center lg:w-1/2 bg-white",
 })``;
 
 export const ChatroomWrapper = styled.div.attrs({

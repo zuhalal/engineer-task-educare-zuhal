@@ -13,7 +13,7 @@ function Login() {
         <H2 className="font-bold lg:flex hidden" style={{ color: "white" }}>
           CHATROOM APP
         </H2>
-        <P1 style={{ color: "white" }} className="lg:flex hidden">
+        <P1 style={{ color: "white", textAlign:"center" }} className="lg:flex hidden">
           A Chatroom App build using Next Js and Firebase
         </P1>
         <P2 style={{ color: "white", textAlign:"center" }} className="lg:hidden flex">
