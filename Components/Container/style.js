@@ -74,7 +74,7 @@ export const ChatWrapper = styled.div.attrs({
   
 `;
 
-export const InputStyled = styled.input.attrs({
+export const TextAreaStyled = styled.textarea.attrs({
   className:
     "bg-transparent flex px-5 lg:py-2 w-full overflow-auto border-2 rounded-3xl focus:border-blueGoogle border-gray-300 transition-all ease-in-out duration-300 focus:outline-none active:outline-none",
 })`
