@@ -9,7 +9,7 @@ import { H3, H4, P1, P2, P3 } from "../../styles/typography";
 
 function ChatRoom() {
   const messageRef = firestore.collection("messages");
-  const query = messageRef.orderBy("createdAt").limit(25);
+  const query = messageRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
   const [formValue, setFormValue] = useState("");
   const dummy = useRef();
@@ -26,6 +26,8 @@ function ChatRoom() {
       photoURL,
       displayName,
     });
+
+    document.getElementById("textsubmit").value = "";
 
     setFormValue("");
 
@@ -62,9 +64,7 @@ function ChatRoom() {
               <div className="w-full">
                 <TextAreaStyled
                   id="textsubmit"
-                  rows="2"
                   type="text"
-                  value={formValue}
                   onChange={(e) => setFormValue(e.target.value)}
                 />
               </div>
