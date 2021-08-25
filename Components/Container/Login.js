@@ -5,7 +5,7 @@ import { LoginWrapper } from "./style";
 
 function Login() {
   return (
-    <div className="flex w-screen h-full">
+    <div className="flex w-screen h-screen">
       <div className="w-1/2 h-full flex flex-col gap-3 justify-center items-center">
         <H2 className="font-bold" style={{ color: "white" }}>
           CHATROOM APP
