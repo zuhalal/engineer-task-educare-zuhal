@@ -28,9 +28,6 @@ function ChatRoom() {
       displayName,
     });
 
-    const clearValue = document.getElementById("textsubmit").value = "";
-    await clearValue;
-
     setFormValue("");
 
     dummy.current.scrollIntoView({ behavior: "smooth" });
@@ -65,6 +62,7 @@ function ChatRoom() {
                   id="textsubmit"
                   rows="2"
                   type="text"
+                  value={formValue}
                   onChange={(e) => setFormValue(e.target.value)}
                 />
               </div>
