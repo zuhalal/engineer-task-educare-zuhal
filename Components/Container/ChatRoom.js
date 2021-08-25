@@ -3,7 +3,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
 import PrimaryButton from "../Elements/Buttons/PrimaryButton";
-import { ChatroomBorderWrapper, ChatroomWrapper, ChatWrapper } from "./style";
+import { ChatroomBorderWrapper, ChatroomWrapper, ChatWrapper, TextAreaStyled } from "./style";
 import SignOut from "../Auth/SignOut";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { H3, P1, P2, P3 } from "../../styles/typography";
@@ -15,7 +15,6 @@ function ChatRoom() {
   const [formValue, setFormValue] = useState("");
   const dummy = useRef();
   const [user] = useAuthState(auth);
-  console.log(messages);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -28,6 +27,9 @@ function ChatRoom() {
       photoURL,
       displayName,
     });
+
+    const clearValue = document.getElementById("textsubmit").value = "";
+    await clearValue;
 
     setFormValue("");
 
@@ -55,16 +57,18 @@ function ChatRoom() {
             : null}
           <div ref={dummy}></div>
           <form onSubmit={sendMessage} className="flex justify-center">
-            <div className="flex gap-3 items-center">
-              <div>
-                <input
+            <div className="flex gap-3 w-full items-center">
+              <div className="w-full">
+                <TextAreaStyled
+                  id="textsubmit"
+                  rows="2"
                   type="text"
                   onChange={(e) => setFormValue(e.target.value)}
                 />
               </div>
-              <PrimaryButton additionalStyle="w-max" type="submit">
-                Submit
-              </PrimaryButton>
+              <button className="w-max bg-transparent h-full flex items-center text-blueGoogle hover:underline" type="submit">
+                <P2>Send</P2>
+              </button>
             </div>
           </form>
         </ChatroomBorderWrapper>
@@ -85,7 +89,7 @@ export const ChatMessage = ({ message }) => {
             <div className="flex flex-col items-start">
               <div className="flex flex-row-reverse items-center gap-2">
                 <ChatWrapper>
-                  <P3>{text}</P3>
+                  <P3 className="chat">{text}</P3>
                 </ChatWrapper>
                 <P3>{messageClass}</P3>
               </div>
@@ -105,7 +109,7 @@ export const ChatMessage = ({ message }) => {
               <P2>{displayName}</P2>
               <div className="flex gap-2 items-center">
                 <ChatWrapper>
-                  <P3>{text}</P3>
+                  <P3 className="chat">{text}</P3>
                 </ChatWrapper>
                 <P3>{messageClass}</P3>
               </div>
