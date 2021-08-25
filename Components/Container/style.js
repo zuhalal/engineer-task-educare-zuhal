@@ -12,10 +12,36 @@ export const ChatroomWrapper = styled.div.attrs({
 export const ChatroomBorderWrapper = styled.div.attrs({
   className: "p-6 overflow-y-auto",
 })`
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+      display: none;
+    }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   background-color: #f5f5f5;
   border-radius: 8px;
   max-height: 600px;
   width: 800px;
+`;
+
+export const ChatroomChatWrapper = styled.div.attrs({
+  className: "overflow-y-auto mb-5",
+})`
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+      display: none;
+    }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  background-color: transparent;
+  max-height: 400px;
+  width: 100%;
 `;
 
 export const ChatWrapper = styled.div.attrs({
