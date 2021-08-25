@@ -97,7 +97,7 @@ export const ChatMessage = ({ message }) => {
               </div>
             </div>
             <div className="w-10 flex items-start">
-              <img src={photoURL} style={{ borderRadius: "50%" }} />
+              <img src={photoURL} style={{ borderRadius: "50%" }} alt="profile picture" />
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ export const ChatMessage = ({ message }) => {
         <div className="flex flex-col items-start mb-5">
           <div className="flex gap-2">
             <div className="w-10 flex items-end">
-              <img src={photoURL} style={{ borderRadius: "50%" }} />
+              <img src={photoURL} style={{ borderRadius: "50%" }} alt="profile picture" />
             </div>
             <div className="flex flex-col items-start">
               <P2>{displayName}</P2>
