@@ -14,6 +14,7 @@ function SignIn() {
   return (
     <PrimaryButton
       onClick={signInWithGoogle}
+      additionalStyle="w-max"
     >
       <FontAwesomeIcon icon={faGoogle} width="20px" />
       <p className="h-full flex items-center">Sign In With Google</p>

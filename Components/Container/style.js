@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const LoginWrapper = styled.div.attrs({
   className:
-    "lg:p-5 p-3 h-full flex flex-col justify-center items-center w-1/2 bg-white",
+    "lg:p-5 p-3 h-full flex flex-col justify-center items-center lg:w-1/2 bg-white",
 })``;
 
 export const ChatroomWrapper = styled.div.attrs({
-  className: "lg:px-52 my-12 py-5 px-5 w-full",
+  className: "lg:px-52 my-12 py-5 px-0 w-full",
 })``;
 
 export const ChatroomBorderWrapper = styled.div.attrs({
@@ -23,8 +23,16 @@ export const ChatroomBorderWrapper = styled.div.attrs({
   scrollbar-width: none; /* Firefox */
   background-color: #f5f5f5;
   border-radius: 8px;
-  max-height: 600px;
-  width: 800px;
+
+  @media only screen and (min-width: 1024px) {
+    max-height: 600px;
+    width: 800px;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    max-height: 600px;
+    width: 100%;
+  }
 `;
 
 export const ChatroomChatWrapper = styled.div.attrs({
@@ -40,6 +48,7 @@ export const ChatroomChatWrapper = styled.div.attrs({
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   background-color: transparent;
+  
   max-height: 400px;
   width: 100%;
 `;
@@ -53,13 +62,21 @@ export const ChatWrapper = styled.div.attrs({
     word-break: break-word;
   }
 
-  min-width: 208px;
-  max-width: 300px;
+  @media only screen and (min-width: 1024px) {
+    min-width: 208px;
+    max-width: 300px;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    min-width: 100px;
+    max-width: 200px;
+  }
+  
 `;
 
 export const TextAreaStyled = styled.textarea.attrs({
   className:
-    "bg-transparent flex px-5 py-2 w-full overflow-auto border-2 rounded-3xl focus:border-blueGoogle border-gray-300 transition-all ease-in-out duration-300 focus:outline-none active:outline-none",
+    "bg-transparent flex px-5 lg:py-2 w-full overflow-auto border-2 rounded-3xl focus:border-blueGoogle border-gray-300 transition-all ease-in-out duration-300 focus:outline-none active:outline-none",
 })`
   resize: none;
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -67,6 +84,9 @@ export const TextAreaStyled = styled.textarea.attrs({
     display: none;
   }
 
+  @media only screen and (max-width: 1024px) {
+    height: 5vh;
+  }
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */

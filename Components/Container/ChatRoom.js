@@ -2,11 +2,10 @@ import React, { useState, useRef } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
-import PrimaryButton from "../Elements/Buttons/PrimaryButton";
 import { ChatroomBorderWrapper, ChatroomChatWrapper, ChatroomWrapper, ChatWrapper, TextAreaStyled } from "./style";
 import SignOut from "../Auth/SignOut";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { H3, P1, P2, P3 } from "../../styles/typography";
+import { H3, H4, P1, P2, P3 } from "../../styles/typography";
 
 function ChatRoom() {
   const messageRef = firestore.collection("messages");
@@ -36,9 +35,12 @@ function ChatRoom() {
   return (
     <>
       {user ? (
-        <div className="flex mt-12">
-          <div className="flex w-full justify-start">
+        <div className="flex lg:flex-row flex-col-reverse mt-12 gap-3">
+          <div className="w-full justify-start lg:flex hidden">
             <H3 style={{ color: "white" }}>{`Hello, ${user.displayName}`}</H3>
+          </div>
+          <div className="w-full justify-start lg:hidden flex">
+            <H4 style={{ color: "white" }}>{`Hello, ${user.displayName}`}</H4>
           </div>
           <div className="flex w-full justify-end">
             <SignOut />

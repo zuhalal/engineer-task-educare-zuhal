@@ -21,7 +21,7 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="min-h-screen">
+      <main className="min-h-screen xl:w-auto w-full">
         {user ? <ChatRoom /> : <Login />}
       </main>
     </div>
