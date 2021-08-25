@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
-import { ChatroomBorderWrapper, ChatroomChatWrapper, ChatroomWrapper, ChatWrapper, TextAreaStyled } from "./style";
+import { ChatroomBorderWrapper, ChatroomChatWrapper, ChatroomWrapper, ChatWrapper, InputStyled } from "./style";
 import SignOut from "../Auth/SignOut";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { H3, H4, P1, P2, P3 } from "../../styles/typography";
@@ -62,7 +62,7 @@ function ChatRoom() {
           <form onSubmit={sendMessage} className="flex justify-center">
             <div className="flex gap-3 w-full items-center">
               <div className="w-full">
-                <TextAreaStyled
+                <InputStyled
                   id="textsubmit"
                   type="text"
                   onChange={(e) => setFormValue(e.target.value)}
