@@ -79,28 +79,31 @@ function ChatRoom() {
     setMessagesIsoDate(convertedDateMessages)
   }, [messages])
   
+  const isDuplicate = (data, obj) =>
+    data.some((el) =>
+      Object.entries(obj).every(([key, value]) => value === el[key])
+    );
+
   useEffect(() => {
-    if (messagesIsoDate.length > 0) {
+    if (messagesIsoDate.length > 0 && messages) {
       messagesIsoDate?.map((msg) => {
         let date = '';
 
         if (msg.createdAt != null) {
           date = msg?.createdAt?.toString().split(" ").slice(1, 4);
 
-          if (date in newMessages) {
-            if (newMessages[date].indexOf(msg) == -1) {
-              setNewMessages(prevMsg => ({...prevMsg, [date]: [...prevMsg[date], msg]}));
-            }
-          } else {
-            setNewMessages(prevMsg => ({...prevMsg, [date]: [msg]}));
-          }
+          setNewMessages(prevMsg => ({
+            ...prevMsg,
+            [date] : [
+              ...prevMsg[date] || [],
+              msg,
+            ]
+          }))
         }
-
-        setIsUpdated(true);
       });
     };
     
-  }, [isReady, isUpdated, messagesIsoDate]);
+  }, [messagesIsoDate]);
 
   useEffect(() => {
     console.log("messagesIsoDate", messagesIsoDate)
