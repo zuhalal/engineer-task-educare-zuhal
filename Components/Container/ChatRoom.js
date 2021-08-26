@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
@@ -14,12 +14,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { H3, H4, P1, P2, P3 } from "../../styles/typography";
 
 function ChatRoom() {
+  const [messagesIsoDate, setMessagesIsoDate] = useState({});
+  const [newMessages, setNewMessages] = useState({});
+  const [formValue, setFormValue] = useState("");
+
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
   const messageRef = firestore.collection("messages");
   const query = messageRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
-  const [formValue, setFormValue] = useState("");
-  const dummy = useRef();
   const [user] = useAuthState(auth);
+  const dummy = useRef();
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -43,6 +49,66 @@ function ChatRoom() {
       alert("Message Cannot Be Empty");
     }
   };
+
+  useEffect(() => {
+    console.log(messages);
+
+    if (messages) {
+      setIsReady(true);
+      return;
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    let convertedDateMessages = []
+    
+    if (messages) {
+      convertedDateMessages = messages.map((msg) => {
+        if (msg.createdAt == null) {
+          msg.createdAt = new Date();
+          return msg;
+        }
+
+        if (typeof msg.createdAt.toDate === "function") {
+          msg.createdAt = msg.createdAt.toDate();
+        }
+        return msg;
+      });
+    }
+
+    setMessagesIsoDate(convertedDateMessages)
+  }, [messages])
+  
+  useEffect(() => {
+    if (messagesIsoDate.length > 0) {
+      messagesIsoDate?.map((msg) => {
+        let date = '';
+
+        if (msg.createdAt != null) {
+          date = msg?.createdAt?.toString().split(" ").slice(1, 4);
+
+          if (date in newMessages) {
+            if (newMessages[date].indexOf(msg) == -1) {
+              setNewMessages(prevMsg => ({...prevMsg, [date]: [...prevMsg[date], msg]}));
+            }
+          } else {
+            setNewMessages(prevMsg => ({...prevMsg, [date]: [msg]}));
+          }
+        }
+
+        setIsUpdated(true);
+      });
+    };
+    
+  }, [isReady, isUpdated, messagesIsoDate]);
+
+  useEffect(() => {
+    console.log("messagesIsoDate", messagesIsoDate)
+  }, [messagesIsoDate])
+
+  useEffect(() => {
+    console.log("newMessages", newMessages);
+  }, [newMessages])
 
   return (
     <div className="xl:p-0 p-3">
