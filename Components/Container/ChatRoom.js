@@ -14,21 +14,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { H3, H4, P1, P2, P3 } from "../../styles/typography";
 
 function ChatRoom() {
-  const [messagesIsoDate, setMessagesIsoDate] = useState({});
-  const [newMessages, setNewMessages] = useState({});
-  const [formValue, setFormValue] = useState("");
 
-  const [isUpdated, setIsUpdated] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [newMessages, setNewMessages] = useState([]);
+  const [formValue, setFormValue] = useState("");
 
   const messageRef = firestore.collection("messages");
   const query = messageRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
   const [user] = useAuthState(auth);
   const dummy = useRef();
-
+  console.log(messages)
   const sendMessage = async (e) => {
     e.preventDefault();
+
     if (formValue != "") {
       const { uid, photoURL, displayName } = auth.currentUser;
 
@@ -51,66 +49,28 @@ function ChatRoom() {
   };
 
   useEffect(() => {
-    console.log(messages);
-
-    if (messages) {
-      setIsReady(true);
-      return;
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    let convertedDateMessages = []
+    if (!user || !messages) return
     
-    if (messages) {
-      convertedDateMessages = messages.map((msg) => {
-        if (msg.createdAt == null) {
-          msg.createdAt = new Date();
-          return msg;
-        }
+    if(messages[messages.length-1].createdAt == null) return
 
-        if (typeof msg.createdAt.toDate === "function") {
-          msg.createdAt = msg.createdAt.toDate();
-        }
-        return msg;
-      });
-    }
+    const messageTemp = [];
 
-    setMessagesIsoDate(convertedDateMessages)
-  }, [messages])
-  
-  const isDuplicate = (data, obj) =>
-    data.some((el) =>
-      Object.entries(obj).every(([key, value]) => value === el[key])
-    );
-
-  useEffect(() => {
-    if (messagesIsoDate.length > 0 && messages) {
-      messagesIsoDate?.map((msg) => {
-        let date = '';
-
-        if (msg.createdAt != null) {
-          date = msg?.createdAt?.toString().split(" ").slice(1, 4);
-
-          setNewMessages(prevMsg => ({
-            ...prevMsg,
-            [date] : [
-              ...prevMsg[date] || [],
-              msg,
-            ]
-          }))
-        }
-      });
-    };
+    messages.map((message)=>{
+      messageTemp.push({
+        id: message.id,
+        text: message.text,
+        createdAt: message.createdAt,
+        displayName: message.displayName,
+        photoURL: message.photoURL,
+        uid: message.uid
+      })
+    })
     
-  }, [messagesIsoDate]);
+    setNewMessages(getChatByDate(messageTemp));
+  }, [user, messages]);
 
   useEffect(() => {
-    console.log("messagesIsoDate", messagesIsoDate)
-  }, [messagesIsoDate])
-
-  useEffect(() => {
-    console.log("newMessages", newMessages);
+    console.log(newMessages)
   }, [newMessages])
 
   return (
@@ -221,5 +181,41 @@ export const ChatMessage = ({ message }) => {
     </>
   );
 };
+
+const getChatByDate = (messages) => {
+  if (!messages || messages.length == 0) return
+
+  const dateFormat = Intl.DateTimeFormat("en-GB", {dateStyle: "medium"});
+
+  const finalMessages = [];
+  const firstMessage = messages[0].createdAt.toDate();
+  const firstMessageString = dateFormat.format(firstMessage);
+
+  finalMessages.push({
+    date: firstMessageString,
+    messages: [messages[0]]
+  })
+
+  if (messages.length == 1) {
+    return finalMessages;
+  } else {
+    messages.map((msg)=>{
+      const msgDate =  msg.createdAt.toDate();
+      const msgDateString = dateFormat.format(msgDate);
+
+      if (finalMessages[finalMessages.length - 1].date == msgDateString) {
+        finalMessages[finalMessages.length - 1].messages.push(msg);
+      } else {
+        finalMessages.push({
+          date: msgDateString,
+          messages: [msg]
+        })
+      }
+      return msg;
+    }) 
+  }
+
+  return finalMessages;
+}
 
 export default ChatRoom;
