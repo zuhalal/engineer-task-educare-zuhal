@@ -12,6 +12,7 @@ import {
 import SignOut from "../Auth/SignOut";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { H3, H4, P1, P2, P3 } from "../../styles/typography";
+import { convertDate } from "../../libs";
 
 function ChatRoom() {
 
@@ -185,14 +186,11 @@ export const ChatMessage = ({ message }) => {
 const getChatByDate = (messages) => {
   if (!messages || messages.length == 0) return
 
-  const dateFormat = Intl.DateTimeFormat("en-GB", {dateStyle: "medium"});
-
   const finalMessages = [];
-  const firstMessage = messages[0].createdAt.toDate();
-  const firstMessageString = dateFormat.format(firstMessage);
+  const firstMessage = convertDate(messages[0].createdAt.toDate());
 
   finalMessages.push({
-    date: firstMessageString,
+    date: firstMessage,
     messages: [messages[0]]
   })
 
@@ -200,14 +198,13 @@ const getChatByDate = (messages) => {
     return finalMessages;
   } else {
     messages.map((msg)=>{
-      const msgDate =  msg.createdAt.toDate();
-      const msgDateString = dateFormat.format(msgDate);
+      const msgDate = convertDate(msg.createdAt.toDate());
 
-      if (finalMessages[finalMessages.length - 1].date == msgDateString) {
+      if (finalMessages[finalMessages.length - 1].date == msgDate) {
         finalMessages[finalMessages.length - 1].messages.push(msg);
       } else {
         finalMessages.push({
-          date: msgDateString,
+          date: msgDate,
           messages: [msg]
         })
       }
