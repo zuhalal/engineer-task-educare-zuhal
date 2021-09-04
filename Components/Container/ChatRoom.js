@@ -110,7 +110,7 @@ const ChatRoom = () => {
                   {newMessages
                     ? newMessages.map((messageByDate) => (
                         <>
-                          <div className="w-full flex justify-center">
+                          <div className="w-full flex justify-center mb-4">
                             <div className="bg-gray-300 p-2 rounded-lg">
                               <P3>{messageByDate.date}</P3>
                             </div>
