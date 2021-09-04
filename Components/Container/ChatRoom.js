@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import SignOut from "../Auth/SignOut";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../../pages/_app";
 import firebase from "firebase";
+
 import {
   ChatroomBorderWrapper,
   ChatroomChatWrapper,
@@ -9,13 +13,12 @@ import {
   ChatWrapper,
   TextAreaStyled,
 } from "./style";
-import SignOut from "../Auth/SignOut";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { H3, H4, P1, P2, P3 } from "../../styles/typography";
+
+import { H3, H4, P2, P3 } from "../../styles/typography";
+
 import { convertDate } from "../../libs";
 
-function ChatRoom() {
-
+const ChatRoom = () => {
   const [newMessages, setNewMessages] = useState([]);
   const [formValue, setFormValue] = useState("");
 
@@ -23,8 +26,9 @@ function ChatRoom() {
   const query = messageRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
   const [user] = useAuthState(auth);
+
   const dummy = useRef();
-  console.log(messages)
+
   const sendMessage = async (e) => {
     e.preventDefault();
 
@@ -49,30 +53,33 @@ function ChatRoom() {
     }
   };
 
+  // useEffect(() => {
+  //   if (messages) {
+  //     dummy.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [messages, user]);
+
   useEffect(() => {
-    if (!user || !messages) return
-    
-    if(messages[messages.length-1].createdAt == null) return
+    if (!user || !messages) return;
+
+    if (messages[messages.length - 1].createdAt == null) return;
 
     const messageTemp = [];
 
-    messages.map((message)=>{
+    messages.map((message) => {
       messageTemp.push({
         id: message.id,
         text: message.text,
         createdAt: message.createdAt,
         displayName: message.displayName,
         photoURL: message.photoURL,
-        uid: message.uid
-      })
-    })
-    
+        uid: message.uid,
+      });
+    });
+
     setNewMessages(getChatByDate(messageTemp));
   }, [user, messages]);
 
-  useEffect(() => {
-    console.log(newMessages)
-  }, [newMessages])
 
   return (
     <div className="xl:p-0 p-3">
@@ -92,9 +99,19 @@ function ChatRoom() {
       <ChatroomWrapper>
         <ChatroomBorderWrapper>
           <ChatroomChatWrapper>
-            {messages
-              ? messages.map((message) => (
-                  <ChatMessage message={message} key={message.id} />
+            {newMessages
+              ? newMessages.map((messageByDate) => (
+                  <>
+                    <div className="w-full flex justify-center">
+                      <div className="bg-gray-300 p-2 rounded-lg">
+                        <P3>{messageByDate.date}</P3>
+                      </div>
+                    </div>
+                    <UserMessage
+                      messages={messageByDate.messages}
+                      id={messageByDate.id}
+                    />
+                  </>
                 ))
               : null}
             <div ref={dummy}></div>
@@ -129,7 +146,19 @@ function ChatRoom() {
       </ChatroomWrapper>
     </div>
   );
-}
+};
+
+const UserMessage = ({ messages }) => {
+  return (
+    <div>
+      {messages
+        ? messages.map((message) => {
+            return <ChatMessage message={message} key={message.id} />;
+          })
+        : null}
+    </div>
+  );
+};
 
 export const ChatMessage = ({ message }) => {
   const { text, uid, photoURL, displayName } = message;
@@ -184,20 +213,20 @@ export const ChatMessage = ({ message }) => {
 };
 
 const getChatByDate = (messages) => {
-  if (!messages || messages.length == 0) return
+  if (!messages || messages.length == 0) return;
 
   const finalMessages = [];
   const firstMessage = convertDate(messages[0].createdAt.toDate());
 
   finalMessages.push({
     date: firstMessage,
-    messages: [messages[0]]
-  })
+    messages: [messages[0]],
+  });
 
   if (messages.length == 1) {
     return finalMessages;
   } else {
-    messages.map((msg)=>{
+    messages.map((msg) => {
       const msgDate = convertDate(msg.createdAt.toDate());
 
       if (finalMessages[finalMessages.length - 1].date == msgDate) {
@@ -205,14 +234,14 @@ const getChatByDate = (messages) => {
       } else {
         finalMessages.push({
           date: msgDate,
-          messages: [msg]
-        })
+          messages: [msg],
+        });
       }
       return msg;
-    }) 
+    });
   }
 
   return finalMessages;
-}
+};
 
 export default ChatRoom;
