@@ -14,6 +14,8 @@ import {
   TextAreaStyled,
 } from "./style";
 
+import { Spinner } from "@chakra-ui/react"
+
 import { H3, H4, P2, P3 } from "../../styles/typography";
 
 import { convertDate } from "../../libs";
@@ -53,11 +55,11 @@ const ChatRoom = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (messages) {
-  //     dummy.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [messages, user]);
+  useEffect(() => {
+    if (newMessages.length <= 0) return
+      
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+  }, [newMessages]);
 
   useEffect(() => {
     if (!user || !messages) return;
@@ -80,71 +82,85 @@ const ChatRoom = () => {
     setNewMessages(getChatByDate(messageTemp));
   }, [user, messages]);
 
-
   return (
-    <div className="xl:p-0 p-3">
-      {user ? (
-        <div className="flex lg:flex-row flex-col-reverse mt-12 gap-3">
-          <div className="w-full justify-start lg:flex hidden">
-            <H3 style={{ color: "white" }}>{`Hello, ${user.displayName}`}</H3>
-          </div>
-          <div className="w-full justify-start lg:hidden flex">
-            <H4 style={{ color: "white" }}>{`Hello, ${user.displayName}`}</H4>
-          </div>
-          <div className="flex w-full justify-end">
-            <SignOut />
-          </div>
-        </div>
-      ) : null}
-      <ChatroomWrapper>
-        <ChatroomBorderWrapper>
-          <ChatroomChatWrapper>
-            {newMessages
-              ? newMessages.map((messageByDate) => (
-                  <>
-                    <div className="w-full flex justify-center">
-                      <div className="bg-gray-300 p-2 rounded-lg">
-                        <P3>{messageByDate.date}</P3>
-                      </div>
-                    </div>
-                    <UserMessage
-                      messages={messageByDate.messages}
-                      id={messageByDate.id}
-                    />
-                  </>
-                ))
-              : null}
-            <div ref={dummy}></div>
-          </ChatroomChatWrapper>
-          <form onSubmit={sendMessage} className="flex justify-center">
-            <div className="flex gap-3 w-full items-center">
-              <div className="w-full">
-                <TextAreaStyled
-                  onKeyPress={(e) => {
-                    if (e.key == "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      document.getElementById("myBtn").click();
-                      return;
-                    }
-                  }}
-                  id="textsubmit"
-                  type="text"
-                  value={formValue}
-                  onChange={(e) => setFormValue(e.target.value)}
-                />
+    <>
+      {messages && user ? (
+        <>
+          <div className="xl:p-0 p-3">
+            {user ? (
+              <div className="flex lg:flex-row flex-col-reverse mt-12 gap-3">
+                <div className="w-full justify-start lg:flex hidden">
+                  <H3
+                    style={{ color: "white" }}
+                  >{`Hello, ${user.displayName}`}</H3>
+                </div>
+                <div className="w-full justify-start lg:hidden flex">
+                  <H4
+                    style={{ color: "white" }}
+                  >{`Hello, ${user.displayName}`}</H4>
+                </div>
+                <div className="flex w-full justify-end">
+                  <SignOut />
+                </div>
               </div>
-              <button
-                id="myBtn"
-                className="w-max bg-transparent h-full flex items-center text-blueGoogle hover:underline"
-                type="submit"
-              >
-                <P2>Send</P2>
-              </button>
-            </div>
-          </form>
-        </ChatroomBorderWrapper>
-      </ChatroomWrapper>
-    </div>
+            ) : null}
+            <ChatroomWrapper>
+              <ChatroomBorderWrapper>
+                <ChatroomChatWrapper>
+                  {newMessages
+                    ? newMessages.map((messageByDate) => (
+                        <>
+                          <div className="w-full flex justify-center">
+                            <div className="bg-gray-300 p-2 rounded-lg">
+                              <P3>{messageByDate.date}</P3>
+                            </div>
+                          </div>
+                          <UserMessage
+                            messages={messageByDate.messages}
+                            id={messageByDate.id}
+                          />
+                        </>
+                      ))
+                    : null}
+                  <div ref={dummy}></div>
+                </ChatroomChatWrapper>
+                <form onSubmit={sendMessage} className="flex justify-center">
+                  <div className="flex gap-3 w-full items-center">
+                    <div className="w-full">
+                      <TextAreaStyled
+                        onKeyPress={(e) => {
+                          if (e.key == "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            document.getElementById("myBtn").click();
+                            return;
+                          }
+                        }}
+                        id="textsubmit"
+                        type="text"
+                        value={formValue}
+                        onChange={(e) => setFormValue(e.target.value)}
+                      />
+                    </div>
+                    <button
+                      id="myBtn"
+                      className="w-max bg-transparent h-full flex items-center text-blueGoogle hover:underline"
+                      type="submit"
+                    >
+                      <P2>Send</P2>
+                    </button>
+                  </div>
+                </form>
+              </ChatroomBorderWrapper>
+            </ChatroomWrapper>
+          </div>
+        </>
+      ) : (
+        <div className="flex gap-3 w-screen h-screen items-center justify-center">
+          <P2 style={{color:"white"}}>Loading</P2>
+          <Spinner size="lg" color="white" />
+        </div>
+      )}
+    </>
   );
 };
 
