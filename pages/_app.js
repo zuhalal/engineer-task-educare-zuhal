@@ -5,6 +5,7 @@ import Layout from "../Components/Layout";
 import firebase from "firebase";
 import "firebase/firestore";
 import "firebase/auth";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7xSDgXK88Lk8LjmhHQ3MgM31KIVMIBDg",
@@ -26,15 +27,17 @@ export const firestore = firebase.firestore();
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Layout>
-      <link
-        rel="preload"
-        href="/fonts/Poppins/Poppins-Regular.ttf"
-        as="font"
-        crossOrigin=""
-      />
-      <Component {...pageProps} />
-    </Layout>
+    <ChakraProvider>
+      <Layout>
+        <link
+          rel="preload"
+          href="/fonts/Poppins/Poppins-Regular.ttf"
+          as="font"
+          crossOrigin=""
+        />
+        <Component {...pageProps} />
+      </Layout>
+    </ChakraProvider>
   );
 }
 
