@@ -14,7 +14,7 @@ import {
   TextAreaStyled,
 } from "./style";
 
-import { Spinner } from "@chakra-ui/react"
+import { Spinner } from "@chakra-ui/react";
 
 import { H3, H4, P2, P3 } from "../../styles/typography";
 
@@ -56,8 +56,8 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    if (newMessages.length <= 0) return
-      
+    if (newMessages.length <= 0) return;
+
     dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [newMessages]);
 
@@ -80,6 +80,7 @@ const ChatRoom = () => {
     });
 
     setNewMessages(getChatByDate(messageTemp));
+    console.log(getChatByDate(messageTemp));
   }, [user, messages]);
 
   return (
@@ -110,15 +111,16 @@ const ChatRoom = () => {
                   {newMessages
                     ? newMessages.map((messageByDate) => (
                         <>
-                          <div className="w-full flex justify-center mb-4">
-                            <div className="bg-gray-300 p-2 rounded-lg">
+                          <div className="w-full flex flex-col items-center gap-3">
+                            <div className="bg-gray-300 p-2 sticky top-0 rounded-lg">
                               <P3>{messageByDate.date}</P3>
                             </div>
+                            <UserMessage
+                              className="w-full"
+                              messages={messageByDate.messages}
+                              id={messageByDate.id}
+                            />
                           </div>
-                          <UserMessage
-                            messages={messageByDate.messages}
-                            id={messageByDate.id}
-                          />
                         </>
                       ))
                     : null}
@@ -156,7 +158,7 @@ const ChatRoom = () => {
         </>
       ) : (
         <div className="flex gap-3 w-screen h-screen items-center justify-center">
-          <P2 style={{color:"white"}}>Loading</P2>
+          <P2 style={{ color: "white" }}>Loading</P2>
           <Spinner size="lg" color="white" />
         </div>
       )}
@@ -166,7 +168,7 @@ const ChatRoom = () => {
 
 const UserMessage = ({ messages }) => {
   return (
-    <div>
+    <div className="w-full">
       {messages
         ? messages.map((message) => {
             return <ChatMessage message={message} key={message.id} />;
